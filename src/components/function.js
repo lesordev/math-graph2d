@@ -5,16 +5,8 @@ import { evaluate } from "mathjs";
 import WarningIcon from "@material-ui/icons/Warning";
 import Tooltip from "@material-ui/core/Tooltip";
 
-import styled from "@emotion/styled";
-
 const color_blue = "#2c5a84";
 const color_grey = "rgb(33 33 33)";
-
-const Wrapper = styled.div`
-  .ML__keyboard {
-    background-color: red !important;
-  }
-`;
 
 let scope = { ln: Math.log };
 
@@ -97,103 +89,101 @@ const InputFunction = (props) => {
   }, [math_expr]);
 
   return (
-    <Wrapper>
+    <div
+      onFocus={() => {
+        field.focus();
+        setColor(color_blue);
+      }}
+      onBlur={() => {
+        props.setSelected(null);
+        // setColor(color_grey);
+      }}
+      onClick={() => {
+        field.focus();
+        props.setSelected(props.index);
+        // setColor(color_blue);
+      }}
+      style={{
+        width: "100%",
+        height: "58px",
+        border: `1px solid ${
+          props.selected === props.index ? color_blue : color_grey
+        }`,
+        justifyContent: "space-around",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <div
-        onFocus={() => {
-          field.focus();
-          setColor(color_blue);
-        }}
-        onBlur={() => {
-          props.setSelected(null);
-          // setColor(color_grey);
-        }}
-        onClick={() => {
-          field.focus();
-          props.setSelected(props.index);
-          // setColor(color_blue);
-        }}
         style={{
-          width: "100%",
-          height: "58px",
-          border: `1px solid ${
+          position: "relative",
+          width: "38px",
+          height: "100%",
+          backgroundColor: `${
             props.selected === props.index ? color_blue : color_grey
           }`,
-          justifyContent: "space-around",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          float: "left",
+          border: `1px solid ${
+            props.selected !== props.index ? "#252727" : color_blue
+          }`,
+        }}
+      >
+        <label
+          className="blured"
+          style={{ position: "absolute", fontSize: "10px", left: 0, top: 0 }}
+        >
+          {props.index + 1}
+        </label>
+
+        <div
+          style={{
+            position: "absolute",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            top: "50%",
+          }}
+        >
+          {error ? (
+            <Tooltip title={error}>
+              <WarningIcon style={{ color: "#d88181" }} />
+            </Tooltip>
+          ) : (
+            <svg
+              style={{
+                color: functionColor,
+              }}
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="currentColor"
+              className="bi bi-lightning-fill"
+              viewBox="0 0 16 16"
+            >
+              <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641l2.5-8.5z" />
+            </svg>
+          )}
+        </div>
+      </div>
+
+      <div
+        style={{
+          color: "white",
+          float: "left",
+          width: "calc( 100% - 38px )",
         }}
       >
         <div
+          ref={math_input}
           style={{
             position: "relative",
-            width: "38px",
-            height: "100%",
-            backgroundColor: `${
-              props.selected === props.index ? color_blue : color_grey
-            }`,
-            float: "left",
-            border: `1px solid ${
-              props.selected !== props.index ? "#252727" : color_blue
-            }`,
+            marginLeft: "10px",
+            fontSize: "120%",
+            width: "calc(100% - 10px)",
           }}
-        >
-          <label
-            className="blured"
-            style={{ position: "absolute", fontSize: "10px", left: 0, top: 0 }}
-          >
-            {props.index + 1}
-          </label>
-
-          <div
-            style={{
-              position: "absolute",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              top: "50%",
-            }}
-          >
-            {error ? (
-              <Tooltip title={error}>
-                <WarningIcon style={{ color: "#d88181" }} />
-              </Tooltip>
-            ) : (
-              <svg
-                style={{
-                  color: functionColor,
-                }}
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="currentColor"
-                className="bi bi-lightning-fill"
-                viewBox="0 0 16 16"
-              >
-                <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641l2.5-8.5z" />
-              </svg>
-            )}
-          </div>
-        </div>
-
-        <div
-          style={{
-            color: "white",
-            float: "left",
-            width: "calc( 100% - 38px )",
-          }}
-        >
-          <div
-            ref={math_input}
-            style={{
-              position: "relative",
-              marginLeft: "10px",
-              fontSize: "120%",
-              width: "calc(100% - 10px)",
-            }}
-          ></div>
-        </div>
+        ></div>
       </div>
-    </Wrapper>
+    </div>
   );
 };
 
