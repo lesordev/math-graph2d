@@ -2,7 +2,6 @@
   "name": "example",
   "version": "1.0.1",
   "private": true,
-  "homepage": "https://greece4ever.github.io/graph.js/",
   "engines": {
     "node": "16.x"
   },
