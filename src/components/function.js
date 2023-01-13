@@ -60,9 +60,24 @@ const InputFunction = (props) => {
       let expr = math_expr.trim();
       if (expr.length == 0) return;
 
-      if (!expr.includes("=")) expr = `f(x)=${expr}`;
+      // if (!expr.includes("=")) expr = `f(x)=${expr}`;
+
+      // trungluc
+      const matches = expr.match(/^(\d*x)([+,-])(\d*y)=(\d*)$/);
+      console.log("match", matches);
+
+      const a = matches.find((e) => e.endsWith("x")).slice(0, -1);
+      const b = matches.find((e) => e.endsWith("y")).slice(0, -1);
+      const c = matches[4];
+
+      expr = `f(x)=(${c}-${a.length ? a : 1}x)/(${
+        matches[2] === "-" ? "+" : "-"
+      }${b.length ? b : 1})`;
+      // -------
 
       // console.log("got to thos state", math_expr)
+      console.log(expr);
+
       let func = evaluate(expr, scope);
       if (typeof func != "function") return;
       try {
